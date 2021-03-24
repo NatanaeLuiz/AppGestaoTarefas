@@ -21,8 +21,8 @@
 
 Clone ou faça [download](https://github.com/NatanaeLuiz/AppGestaoTarefas/archive/refs/heads/main.zip) deste projeto, vá para a implementação do servidor de sua escolha e siga as instruções README
 
-1 - Importe o projeto em uma IDE de sua preferência
-2 - Execute o servidor
+1 - Importe o projeto em uma IDE de sua preferência<br>
+2 - Execute o servidor<br>
 3 - Abra o projeto no browser de sua preferencia
 
 ## Informações
