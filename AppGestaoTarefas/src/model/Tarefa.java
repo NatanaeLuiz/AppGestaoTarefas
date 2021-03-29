@@ -33,6 +33,9 @@ public class Tarefa {
 	
 	@Column
 	private Date data;
+	
+	@Column
+	private String status;
 
 	public int getId() {
 		return id;
@@ -82,5 +85,13 @@ public class Tarefa {
 		this.data = data;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	
 }
