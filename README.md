@@ -14,6 +14,8 @@
 - `Hibernate (JPA)`
 - `PosgreSQL`
 - `Servidor Apache Tomcat v8.0`
+- `Primefaces 6.1`
+- `Maven 3.8.0`
 
 <br>
 
