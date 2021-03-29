@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Consulta Tarefas</title>
+	</h:head>
+	
+	<h:body>
+		<h:form id="frmConsulta">
+		    <h3>Número</h3>
+			<p:inputText value="#{tarefaBean.tarefa.id}"/>
+			<h3>Titulo</h3>
+			<p:inputText value="#{tarefaBean.tarefa.titulo}"/>
+			<h3>Responsavel</h3>
+			<p:inputText value="#{tarefaBean.tarefa.responsavel}"/>
+			<h3>Prioridade</h3>
+			<p:selectOneMenu value="#{tarefaBean.tarefa.prioridade}">
+				<f:selectItem itemLabel="Seleciona a prioridade" itemValue="null"/>
+				<f:selectItems value="#{tarefaBean.prioridades}"/>
+			</p:selectOneMenu>
+			<h3>Status</h3>
+			<p:selectOneMenu value="#{tarefaBean.tarefa.status}">
+				<f:selectItem itemLabel="Seleciona a prioridade" itemValue="null"/>
+				<f:selectItems value="#{tarefaBean.status}"/>
+			</p:selectOneMenu>
+			<br/>
+			<br/>
+			<p:commandButton value="Consultar" action="#{tarefaBean.consultaTarefa}" update="frmTabela"/>
+			<br/>
+			<br/>
+			<br/>
+		</h:form>
+
+		
+		<h:form id="frmTabela">	
+			<p:dataTable id="gridTarefas" var="itemTarefasConsulta" value="#{tarefaBean.tarefasConsulta}" paginator="true" rows="6"
+				paginatorPosition="bottom"> 
+				<f:facet name="header">
+					Tarefas
+				</f:facet>
+				<p:column headerText="Id">
+					<h:outputText value="#{itemTarefasConsulta.id}"/>
+				</p:column>
+				<p:column headerText="Titulo">
+					<h:outputText value="#{itemTarefasConsulta.titulo}"/>
+				</p:column>
+				<p:column headerText="Responsavel">
+					<h:outputText value="#{itemTarefasConsulta.responsavel}"/>
+				</p:column>
+				<p:column headerText="Status">
+					<h:outputText value="#{itemTarefasConsulta.status}"/>
+				</p:column>
+				<p:column headerText="Ações">
+					<p:commandButton value="Concluir" action="#{tarefaBean.atualizaStatus}" update="frmTabela"/>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</h:body>
+</html>

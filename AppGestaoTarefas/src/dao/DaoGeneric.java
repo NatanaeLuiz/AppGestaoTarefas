@@ -42,6 +42,22 @@ public class DaoGeneric<O> {
 		return retornoLista;
 	}
 	
+	public List<O> consultaTarefa(Class<O> objEntidade, String sqlFrom){
+		List<O> retornoLista = new ArrayList<O>();
+		try {
+			em = JPAUtil.getEntityManager();
+			em.getTransaction().begin();
+			Query sql = em.createQuery(" FROM " + objEntidade.getName().toString() + sqlFrom); //Utilizando PQL não precisa do SELECT
+			retornoLista = sql.getResultList();
+		} catch (Exception e) {
+			System.out.println("Erro ao consultar!");
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return retornoLista;
+	}
+	
 	public void remover(int id) {
 		try {
 			em = JPAUtil.getEntityManager();
@@ -71,4 +87,7 @@ public class DaoGeneric<O> {
 			em.close();
 		}
 	}
+	
+	
+	
 }

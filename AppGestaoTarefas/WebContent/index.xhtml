@@ -28,14 +28,16 @@
 <!-- 			Data: -->
 <!-- 			<h:inputText value="#{tarefaBean.tarefa.data}"/><br/> -->
 <!-- 	process="@this" update="frmTabela" -->
-			<p:commandButton value="Salvar" action="#{tarefaBean.salva}" update="frmTabela"></p:commandButton>
-			<p:commandButton value="Listar" action="#{tarefaBean.lista}" ></p:commandButton>	
-			
+			<p:commandButton value="Salvar" action="#{tarefaBean.salva}" update="frmTabela"/>
+			<p:commandButton value="Listar" action="#{tarefaBean.lista}" />	
+			<p:commandButton value="Consulta" action="#{tarefaBean.redirectConsultaTarefa('resources/view/consultaTarefas')}" />	
+
+
 		</h:form>
 
 		
 		<h:form id="frmTabela">	
-			<p:dataTable id="gridTarefas" var="itemTarefa" value="#{tarefaBean.tarefas}" paginator="true" rows="10"
+			<p:dataTable id="gridTarefas" var="itemTarefa" value="#{tarefaBean.tarefas}" paginator="true" rows="6"
 				paginatorPosition="bottom"> 
 				<f:facet name="header">
 					Tarefas
