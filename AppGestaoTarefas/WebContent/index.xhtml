@@ -1,12 +1,72 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
 	<h:head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Gestão Tarefas</title>
 	</h:head>
+	
 	<h:body>
-	Teste
+		<h:form id="frmCadastro">
+			ID:
+			<h:outputText value="#{tarefaBean.tarefa.id}"/><br/>
+			Titulo:
+			<h:inputText value="#{tarefaBean.tarefa.titulo}"/><br/>
+			Descrição:
+			<h:inputText value="#{tarefaBean.tarefa.descricao}"/><br/>
+			Responsavel:
+			<h:inputText value="#{tarefaBean.tarefa.responsavel}"/><br/>
+			Prioridade:
+			<p:selectOneMenu value="#{tarefaBean.tarefa.prioridade}">
+				<f:selectItem itemLabel="Seleciona a prioridade" itemValue="null"/>
+				<f:selectItems value="#{tarefaBean.prioridades}"/>
+			</p:selectOneMenu><br/>
+<!-- 			<h:inputText value="#{tarefaBean.tarefa.prioridade}"/><br/> -->
+<!-- 			Data: -->
+<!-- 			<h:inputText value="#{tarefaBean.tarefa.data}"/><br/> -->
+<!-- 	process="@this" update="frmTabela" -->
+			<p:commandButton value="Salvar" action="#{tarefaBean.salva}" update="frmTabela"></p:commandButton>
+			<p:commandButton value="Listar" action="#{tarefaBean.lista}" ></p:commandButton>	
+			
+		</h:form>
+
+		
+		<h:form id="frmTabela">	
+			<p:dataTable id="gridTarefas" var="itemTarefa" value="#{tarefaBean.tarefas}" paginator="true" rows="10"
+				paginatorPosition="bottom"> 
+				<f:facet name="header">
+					Tarefas
+				</f:facet>
+				<p:column headerText="Id">
+					<h:outputText value="#{itemTarefa.id}"/>
+				</p:column>
+				<p:column headerText="Titulo">
+					<h:outputText value="#{itemTarefa.titulo}"/>
+				</p:column>
+				<p:column headerText="Descrição">
+					<h:outputText value="#{itemTarefa.descricao}"/>
+				</p:column>
+				<p:column headerText="Responsavel">
+					<h:outputText value="#{itemTarefa.responsavel}"/>
+				</p:column>
+				<p:column headerText="Prioridade">
+					<h:outputText value="#{itemTarefa.prioridade}"/>
+				</p:column>
+				<p:column headerText="Data">
+					<h:outputText value="#{itemTarefa.data}"/>
+				</p:column>
+				<p:column headerText="Ações">
+						<p:commandButton value="Remover" actionListener="#{tarefaBean.remove(itemTarefa)}"
+							onclick="if(!confirm('Deseja excluir a tarefa #{itemTarefa.titulo}  ?')) return false"
+							process="@this" update="gridTarefas"/>
+						<p:commandButton value="Atualizar" actionListener="#{tarefaBean.selecionaTarefa(itemTarefa)}"
+							  update="frmCadastro" />
+<!-- process="@this" update="frmCadastro, frmTabela" -->
+				</p:column>
+			</p:dataTable>
+		</h:form>
 	</h:body>
 </html>

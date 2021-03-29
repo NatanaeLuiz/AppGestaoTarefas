@@ -1,81 +1,126 @@
 package controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
 
+import dao.DaoGeneric;
 import model.Tarefa;
 
-public class TarefaController {
+@ViewScoped
+@ManagedBean(name = "tarefaBean")
+public class TarefaController{
 
-	EntityManagerFactory emf;
 	EntityManager em;
+	private Tarefa tarefa = new Tarefa();
+	private DaoGeneric<Tarefa> daoGeneric = new DaoGeneric<Tarefa>();
+	private List<Tarefa> tarefas = new ArrayList<Tarefa>();
+	private List<String> prioridades;
 	
-	public TarefaController() {
-		emf = Persistence.createEntityManagerFactory("tarefa"); //Mesmo parametro informado na persistence.xml (name="tarefa")
-		em = emf.createEntityManager();
-	}
 	
-	public void salva(Tarefa _tarefa) {
+	
+
+
+	public void salva() {
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		try {
-			em.getTransaction().begin(); //Inicia transação no banco
-			if (_tarefa.getId() == 0) {
-				em.persist(_tarefa); //PERSISTE objeto no banco
+			Date data = formato.parse("26/03/2021");
+			tarefa.setData(data);
+			if (tarefa.getId() == 0) {
+				daoGeneric.salvar(tarefa);
+				
 			} else {
-				em.merge(_tarefa); //MERGE   atualiza objeto no banco
+				daoGeneric.atualizar(tarefa);
 			}
-			em.getTransaction().commit();
+			lista();
+			tarefa = new Tarefa();
 		} catch (Exception e) {
-			System.out.println("Erro na Gravação");
 			em.getTransaction().rollback();
-		} finally {
-			emf.close();
+			e.printStackTrace();
 		}
 	}
 	
-	public void remove(Tarefa _tarefa) {
+	public void remove(Tarefa tarefa) {
 		try {
-			em.getTransaction().begin(); //Inicia transação no banco
-			Query query = em.createNativeQuery("DELETE tarefa FROM TAREFA WHERE id = " + _tarefa.getId());//remove objeto no banco
-			query.executeUpdate();
-			em.getTransaction().commit();
+			daoGeneric.remover(tarefa.getId());
+			lista();
 		} catch (Exception e) {
-			System.out.println("Erro ao tentar remover " + _tarefa.getTitulo());
 			em.getTransaction().rollback();
-		} finally {
-			emf.close();
+			e.printStackTrace();
 		}
+		
 	}
 	
-	public List<Tarefa> lista(){
-		List<Tarefa> tarefas = new ArrayList<Tarefa>();
-		try {
-			em.getTransaction().begin();
-			Query sql = em.createQuery("FROM Tarefa tarefa"); //Utilizando PQL não precisa do SELECT
-			tarefas = sql.getResultList();
-		} catch (Exception e) {
-			System.out.println("Erro ao consultar!");
-			em.getTransaction().rollback();
-		} finally {
-			emf.close();
-		}
-		return tarefas;
+//	public void atualiza(Tarefa tarefa) {
+//		daoGeneric.atualizar(tarefa);
+//	}
+	
+	public void selecionaTarefa(Tarefa tarefaSelecionada) {
+		//tarefa = new Tarefa();
+//		tarefa.setId(tarefaSelecionada.getId());
+//		tarefa.setTitulo(tarefaSelecionada.getTitulo());
+//		tarefa.setDescricao(tarefaSelecionada.getDescricao());
+//		tarefa.setPrioridade(tarefaSelecionada.getPrioridade());
+//		tarefa.setResponsavel(tarefaSelecionada.getResponsavel());
+//		tarefa.setData(tarefaSelecionada.getData());
+//		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+//		try {
+//			context.redirect("index.xhtml");
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		tarefa = tarefaSelecionada;
 	}
 	
-	public Tarefa getTarefa(Integer id) {
-		Tarefa tarefa = null;
-		try {
-			tarefa = em.find(Tarefa.class, id);
-		} catch (Exception e) {
-			System.out.println("Erro ao buscar tarefa por id " + id);
-		} finally {
-			emf.close();
-		}
-		return tarefa;
+	@PostConstruct
+	public void lista(){
+		tarefas = daoGeneric.listar(Tarefa.class);
 	}
+	
+	public Tarefa getTarefa() { return tarefa; }
+	
+	public void setTarefa(Tarefa tarefa) { this.tarefa = tarefa; }
+	
+	public DaoGeneric<Tarefa> getDaoGeneric() { return daoGeneric;	}
+	
+	public void setDaoGeneric(DaoGeneric<Tarefa> daoGeneric) { this.daoGeneric = daoGeneric; }
+	
+	public List<Tarefa> getTarefas() { return tarefas; }
+
+	public void setTarefas(List<Tarefa> tarefas) { this.tarefas = tarefas; }
+
+	public List<String> getPrioridades() {
+		this.prioridades = new ArrayList<String>();
+		prioridades.add("ALTA");
+		prioridades.add("MEDIA");
+		prioridades.add("BAIXA");
+		return prioridades;
+	}
+
+	public void setPrioridades(List<String> prioridades) {
+		this.prioridades = prioridades;
+	}
+	
+	
+	
+//	
+//	public Tarefa getTarefa(Integer id) {
+//		Tarefa tarefa = null;
+//		try {
+//			tarefa = em.find(Tarefa.class, id);
+//		} catch (Exception e) {
+//			System.out.println("Erro ao buscar tarefa por id " + id);
+//		} finally {
+//			emf.close();
+//		}
+//		return tarefa;
+//	}
 
 }
