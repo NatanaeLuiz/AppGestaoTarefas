@@ -11,7 +11,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="TAREFA")
-//@ManagedBean(value = "tarefaBean")
 public class Tarefa {
 	
 	@Id
