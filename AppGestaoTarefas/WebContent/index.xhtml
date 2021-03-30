@@ -7,10 +7,16 @@
 	<h:head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Gestão Tarefas</title>
+<!-- 		<link rel="stylesheet" href="resources/css/style.css">	 -->
+<!-- 		<link rel="StyleSheet" type="text/css" href="/resources/css/style.css"/> -->
+		<h:outputStylesheet library="css" name="style.css"/>
+
 	</h:head>
-	
+
 	<h:body>
+		<div class="container">
 		<h:form id="frmCadastro">
+			<div class="box">
 			ID:
 			<h:outputText value="#{tarefaBean.tarefa.id}"/><br/>
 			Titulo:
@@ -24,16 +30,18 @@
 				<f:selectItem itemLabel="Seleciona a prioridade" itemValue="null"/>
 				<f:selectItems value="#{tarefaBean.prioridades}"/>
 			</p:selectOneMenu><br/>
-<!-- 			<h:inputText value="#{tarefaBean.tarefa.prioridade}"/><br/> -->
-<!-- 			Data: -->
-<!-- 			<h:inputText value="#{tarefaBean.tarefa.data}"/><br/> -->
+			Data:<p:calendar id="basic" value="#{tarefaBean.tarefa.data}" /><br/>
+			
+<!-- 			<h:inputText value="#{tarefaBean.tarefa.data}"/> -->
 <!-- 	process="@this" update="frmTabela" -->
-			<p:commandButton value="Salvar" action="#{tarefaBean.salva}" update="frmTabela"/>
-			<p:commandButton value="Listar" action="#{tarefaBean.lista}" />	
-			<p:commandButton value="Consulta" action="#{tarefaBean.redirectConsultaTarefa('resources/view/consultaTarefas')}" />	
-
-
+			</div>
+			<div class="boxButton">
+				<p:commandButton value="Salvar" action="#{tarefaBean.salva}" update="frmTabela"/>
+				<p:commandButton value="Listar" action="#{tarefaBean.lista}" update="frmTabela"/>	
+				<p:commandButton value="Consulta" action="#{tarefaBean.redirectConsultaTarefa('resources/view/consultaTarefas')}" />	
+			</div>
 		</h:form>
+		</div>
 
 		
 		<h:form id="frmTabela">	

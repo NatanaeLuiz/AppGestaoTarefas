@@ -25,9 +25,6 @@ public class TarefaController{
 	private List<String> prioridades;
 	private List<String> status;
 	
-	
-	
-	
 	public TarefaController() {
 		this.tarefa.setId(0);
 		this.tarefa.setTitulo("");
@@ -38,12 +35,9 @@ public class TarefaController{
 	}
 
 	public void salva() {
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		try {
-			Date data = formato.parse("26/03/2021");
-			tarefa.setData(data);
-			tarefa.setStatus("ANDAMENTO");
 			if (tarefa.getId() == 0) {
+				tarefa.setStatus("ANDAMENTO");
 				daoGeneric.salvar(tarefa);
 				
 			} else {
@@ -72,6 +66,11 @@ public class TarefaController{
 		tarefa = tarefaSelecionada;
 	}
 	
+	public void concluiTarefa(Tarefa tarefaSelecionada) {
+		tarefaSelecionada.setStatus("CONCLUIDA");
+		daoGeneric.atualizar(tarefaSelecionada);
+	}
+	
 	@PostConstruct
 	public void consultaTarefa() {
 		StringBuilder sqlFrom = new StringBuilder();
@@ -79,7 +78,7 @@ public class TarefaController{
 		if (tarefa.getId() != 0)
 			sqlFrom.append(" AND ID = " + tarefa.getId());
 		if (!"".equals(tarefa.getTitulo()))
-			sqlFrom.append(" AND TITULO = '" + tarefa.getTitulo() + "'");
+			sqlFrom.append(" AND TITULO LIKE '%" + tarefa.getTitulo() + "%'");
 		if (!"".equals(tarefa.getResponsavel()))
 			sqlFrom.append(" AND RESPONSAVEL = '" + tarefa.getResponsavel() + "'");
 		if (!"null".equals(tarefa.getPrioridade()))
@@ -115,9 +114,7 @@ public class TarefaController{
 
 	public List<Tarefa> getTarefasConsulta() { return tarefasConsulta; }
 
-	public void setTarefasConsulta(List<Tarefa> tarefasConsulta) {
-		this.tarefasConsulta = tarefasConsulta;
-	}
+	public void setTarefasConsulta(List<Tarefa> tarefasConsulta) { this.tarefasConsulta = tarefasConsulta; }
 
 	public List<String> getPrioridades() {
 		this.prioridades = new ArrayList<String>();
