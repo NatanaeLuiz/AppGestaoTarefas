@@ -55,7 +55,8 @@
 					<h:outputText value="#{itemTarefasConsulta.status}"/>
 				</p:column>
 				<p:column headerText="Ações">
-					<p:commandButton value="Concluir" action="#{tarefaBean.atualizaStatus}" update="frmTabela"/>
+					<p:commandButton value="Concluir" actionListener="#{tarefaBean.concluiTarefa(itemTarefasConsulta)}"
+					 process="@this" update="frmTabela"/>
 				</p:column>
 			</p:dataTable>
 		</h:form>
